@@ -1,4 +1,4 @@
-module gitlab.com/umbrella-web/machine-learning/goreco
+module github.com/umbrella-evgeny-nefedkin/goreco
 
 go 1.15
 
