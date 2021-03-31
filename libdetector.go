@@ -1,4 +1,4 @@
-package libdetector
+package goreco
 
 import (
 	"fmt"
@@ -63,7 +63,7 @@ func NewDetector(conf *Config) Detector {
 	return d
 }
 
-func (d *detector) Detect(img gocv.Mat, threshold float32) (boxes Boxes) {
+func (d *detector) Detect(img gocv.Mat, threshold float32, all bool) (boxes Boxes) {
 
 	if img.Empty() {
 		log.Printf("libdetector: empty frame skipped\n")
@@ -73,7 +73,7 @@ func (d *detector) Detect(img gocv.Mat, threshold float32) (boxes Boxes) {
 	// create resized blob
 	blob := gocv.BlobFromImage(img, d.scale, d.resize, d.mean, d.swapRB, false)
 
-	boxes = d._detectBlob(&blob, threshold)
+	boxes = d._detectBlob(&blob, threshold, all)
 
 	if err := blob.Close(); err != nil {
 		log.Printf("[WARN] libdetector: %s", err.Error())
@@ -82,9 +82,9 @@ func (d *detector) Detect(img gocv.Mat, threshold float32) (boxes Boxes) {
 	return boxes
 }
 
-func (d *detector) DetectBlob(blob gocv.Mat, threshold float32) (boxes Boxes) {
+func (d *detector) DetectBlob(blob gocv.Mat, threshold float32, all bool) (boxes Boxes) {
 
-	boxes = d._detectBlob(&blob, threshold)
+	boxes = d._detectBlob(&blob, threshold, all)
 
 	if err := blob.Close(); err != nil {
 		log.Printf("[WARN] libdetector: %s", err.Error())
@@ -93,7 +93,7 @@ func (d *detector) DetectBlob(blob gocv.Mat, threshold float32) (boxes Boxes) {
 	return boxes
 }
 
-func (d *detector) _detectBlob(blob *gocv.Mat, threshold float32) (boxes Boxes) {
+func (d *detector) _detectBlob(blob *gocv.Mat, threshold float32, all bool) (boxes Boxes) {
 
 	// set net input
 	d.net.SetInput(*blob, "")
@@ -102,7 +102,7 @@ func (d *detector) _detectBlob(blob *gocv.Mat, threshold float32) (boxes Boxes) 
 	prob := d.net.Forward("")
 	fmt.Println(prob.Size())
 
-	boxes = d.proc.Process(prob, threshold)
+	boxes = d.proc.Process(prob, threshold, all)
 
 	if err := prob.Close(); err != nil {
 		log.Printf("[WARN] libdetector: %s\n", err.Error())

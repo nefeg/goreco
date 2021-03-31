@@ -1,4 +1,4 @@
-# gorec
+# goreco
 
 OpenCV-DNN wrapper written in GO for using in Unspot.
 
@@ -20,7 +20,8 @@ go get gitlab.com/umbrella-web/machine-learning/goreco
 package main
 
 import (
-    "gitlab.com/umbrella-web/machine-learning/goreco"
+    "github.com/umbrella-evgeny-nefedkin/goreco"
+    "gocv.io/x/gocv"
 )
 
 func processFrame(img gocv.Mat) Boxes{

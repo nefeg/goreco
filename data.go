@@ -1,4 +1,4 @@
-package libdetector
+package goreco
 
 import "gocv.io/x/gocv"
 

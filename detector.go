@@ -1,10 +1,10 @@
-package libdetector
+package goreco
 
 import "gocv.io/x/gocv"
 
 type Detector interface {
-	Detect(img gocv.Mat, threshold float32) Boxes
-	DetectBlob(blob gocv.Mat, threshold float32) Boxes
+	Detect(img gocv.Mat, threshold float32, all bool) Boxes
+	DetectBlob(blob gocv.Mat, threshold float32, all bool) Boxes
 }
 
 type Box struct {

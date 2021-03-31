@@ -1,4 +1,4 @@
-package libdetector
+package goreco
 
 import (
 	"fmt"
@@ -7,11 +7,11 @@ import (
 
 type processor struct {
 	Processor
-	process func(detectionResult gocv.Mat, threshold float32) Boxes
+	process func(detectionResult gocv.Mat, threshold float32, all bool) Boxes
 }
 
-func (p *processor) Process(detectionResult gocv.Mat, threshold float32) Boxes {
-	return p.process(detectionResult, threshold)
+func (p *processor) Process(detectionResult gocv.Mat, threshold float32, all bool) Boxes {
+	return p.process(detectionResult, threshold, all)
 }
 
 func NewProcessorSSD() Processor {
@@ -35,7 +35,7 @@ func NewProcessorYOLO() Processor {
 // where N is the number of detections, and each detection
 // is a vector of float values
 // [batchId, classId, confidence, left, top, right, bottom]
-func postProcessSSD(results gocv.Mat, threshold float32) (b Boxes) {
+func postProcessSSD(results gocv.Mat, threshold float32, all bool) (b Boxes) {
 
 	for i := 0; i < results.Total(); i += 7 {
 
@@ -48,7 +48,10 @@ func postProcessSSD(results gocv.Mat, threshold float32) (b Boxes) {
 		//fmt.Println(results.GetFloatAt(0, i+9), results.GetFloatAt(0, i+10), results.GetFloatAt(0, i+11), results.GetFloatAt(0, i+12))
 
 		//if confidence > threshold {
-		if confidence > threshold && classId == 1 {
+		if confidence > threshold {
+			if !all && classId != 1 {
+				continue
+			}
 			box := Box{
 				class: classId,
 				rect: struct {
@@ -74,7 +77,7 @@ The outputs object are vectors of lenght 85
 1x box confidence
 80x class confidence
 */
-func postProcessYOLO(results gocv.Mat, threshold float32) (b Boxes) {
+func postProcessYOLO(results gocv.Mat, threshold float32, all bool) (b Boxes) {
 
 	fts, _ := results.DataPtrFloat32()
 
