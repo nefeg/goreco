@@ -13,15 +13,15 @@ OpenCV-DNN wrapper written in GO for using in Unspot.
 # Getting started
 ## How to use
 ```shell
-go get gitlab.com/umbrella-web/machine-learning/goreco
+go get "github.com/umbrella-evgeny-nefedkin/goreco"
 ```
 
 ```go
 package main
 
 import (
-    "github.com/umbrella-evgeny-nefedkin/goreco"
-    "gocv.io/x/gocv"
+	"github.com/umbrella-evgeny-nefedkin/goreco"
+        "gocv.io/x/gocv"
 )
 
 func processFrame(img gocv.Mat) Boxes{

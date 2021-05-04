@@ -1,7 +1,6 @@
 package goreco
 
 import (
-	"fmt"
 	"gocv.io/x/gocv"
 	"image"
 	"log"
@@ -100,7 +99,6 @@ func (d *detector) _detectBlob(blob *gocv.Mat, threshold float32, all bool) (box
 
 	// start forwarding
 	prob := d.net.Forward("")
-	fmt.Println(prob.Size())
 
 	boxes = d.proc.Process(prob, threshold, all)
 
