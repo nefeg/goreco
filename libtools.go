@@ -8,7 +8,7 @@ import (
 	"image/color"
 )
 
-func MarkObjects(img *gocv.Mat, boxes Boxes, putText bool) {
+func MarkObjects(img *gocv.Mat, boxes []Box, putText bool) {
 	scaleX := float32(img.Cols())
 	scaleY := float32(img.Rows())
 

@@ -7,10 +7,10 @@ import (
 
 type processor struct {
 	Processor
-	process func(detectionResult gocv.Mat, threshold float32, all bool) Boxes
+	process func(detectionResult gocv.Mat, threshold float32, all bool) []Box
 }
 
-func (p *processor) Process(detectionResult gocv.Mat, threshold float32, all bool) Boxes {
+func (p *processor) Process(detectionResult gocv.Mat, threshold float32, all bool) []Box {
 	return p.process(detectionResult, threshold, all)
 }
 
@@ -26,7 +26,7 @@ func NewProcessorYOLO() Processor {
 	return p
 }
 
-//func (p *processor)Process(detectionResult gocv.Mat, threshold float32 ) Boxes{
+//func (p *processor)Process(detectionResult gocv.Mat, threshold float32 ) []Box{
 //
 //}
 
@@ -35,7 +35,7 @@ func NewProcessorYOLO() Processor {
 // where N is the number of detections, and each detection
 // is a vector of float values
 // [batchId, classId, confidence, left, top, right, bottom]
-func postProcessSSD(results gocv.Mat, threshold float32, all bool) (b Boxes) {
+func postProcessSSD(results gocv.Mat, threshold float32, all bool) (b []Box) {
 
 	for i := 0; i < results.Total(); i += 7 {
 
@@ -77,7 +77,7 @@ The outputs object are vectors of lenght 85
 1x box confidence
 80x class confidence
 */
-func postProcessYOLO(results gocv.Mat, threshold float32, all bool) (b Boxes) {
+func postProcessYOLO(results gocv.Mat, threshold float32, all bool) (b []Box) {
 
 	fts, _ := results.DataPtrFloat32()
 

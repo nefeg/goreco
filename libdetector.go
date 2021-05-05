@@ -62,7 +62,7 @@ func NewDetector(conf *Config) Detector {
 	return d
 }
 
-func (d *detector) Detect(img gocv.Mat, threshold float32, all bool) (boxes Boxes) {
+func (d *detector) Detect(img gocv.Mat, threshold float32, all bool) (boxes []Box) {
 
 	if img.Empty() {
 		log.Printf("libdetector: empty frame skipped\n")
@@ -81,7 +81,7 @@ func (d *detector) Detect(img gocv.Mat, threshold float32, all bool) (boxes Boxe
 	return boxes
 }
 
-func (d *detector) DetectBlob(blob gocv.Mat, threshold float32, all bool) (boxes Boxes) {
+func (d *detector) DetectBlob(blob gocv.Mat, threshold float32, all bool) (boxes []Box) {
 
 	boxes = d._detectBlob(&blob, threshold, all)
 
@@ -92,7 +92,7 @@ func (d *detector) DetectBlob(blob gocv.Mat, threshold float32, all bool) (boxes
 	return boxes
 }
 
-func (d *detector) _detectBlob(blob *gocv.Mat, threshold float32, all bool) (boxes Boxes) {
+func (d *detector) _detectBlob(blob *gocv.Mat, threshold float32, all bool) (boxes []Box) {
 
 	// set net input
 	d.net.SetInput(*blob, "")
@@ -115,7 +115,6 @@ func (d *detector) Resize() image.Point {
 
 func (d *detector) Scale() float64 {
 	return d.scale
-
 }
 
 func (d *detector) Mean() gocv.Scalar {

@@ -3,8 +3,8 @@ package goreco
 import "gocv.io/x/gocv"
 
 type Detector interface {
-	Detect(img gocv.Mat, threshold float32, all bool) Boxes
-	DetectBlob(blob gocv.Mat, threshold float32, all bool) Boxes
+	Detect(img gocv.Mat, threshold float32, all bool) []Box
+	DetectBlob(blob gocv.Mat, threshold float32, all bool) []Box
 }
 
 type Box struct {
@@ -15,5 +15,3 @@ type Box struct {
 	}
 	conf float32
 }
-
-type Boxes []Box

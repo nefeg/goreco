@@ -24,7 +24,7 @@ import (
         "gocv.io/x/gocv"
 )
 
-func processFrame(img gocv.Mat) Boxes{
+func processFrame(img gocv.Mat) []Box{
     // Create pre-config
 	Config := goreco.DefaultSSDConfig
 
