@@ -62,6 +62,11 @@ func NewDetector(conf *Config) Detector {
 	return d
 }
 
+func (d *detector) Prepare(img gocv.Mat) (processed *gocv.Mat) {
+	*processed = gocv.BlobFromImage(img, d.scale, d.resize, d.mean, d.swapRB, false)
+	return processed
+}
+
 func (d *detector) Detect(img gocv.Mat, threshold float32, all bool) (boxes []Box) {
 
 	if img.Empty() {
@@ -70,13 +75,14 @@ func (d *detector) Detect(img gocv.Mat, threshold float32, all bool) (boxes []Bo
 	}
 
 	// create resized blob
-	blob := gocv.BlobFromImage(img, d.scale, d.resize, d.mean, d.swapRB, false)
+	blob := d.Prepare(img)
+	defer func() {
+		if err := blob.Close(); err != nil {
+			log.Printf("[WARN] libdetector: %s", err.Error())
+		}
+	}()
 
-	boxes = d._detectBlob(&blob, threshold, all)
-
-	if err := blob.Close(); err != nil {
-		log.Printf("[WARN] libdetector: %s", err.Error())
-	}
+	boxes = d._detectBlob(blob, threshold, all)
 
 	return boxes
 }

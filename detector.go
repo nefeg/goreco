@@ -3,6 +3,7 @@ package goreco
 import "gocv.io/x/gocv"
 
 type Detector interface {
+	Prepare(img gocv.Mat) (processed *gocv.Mat)
 	Detect(img gocv.Mat, threshold float32, all bool) []Box
 	DetectBlob(blob gocv.Mat, threshold float32, all bool) []Box
 }
